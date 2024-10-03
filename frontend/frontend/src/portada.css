@@ -1,0 +1,16 @@
+.cover {
+    background-color: #ec6f6f; /* Color de fondo (puedes cambiarlo según tus preferencias) */
+    padding: 50px; /* Espaciado interno para que el texto no esté pegado al borde */
+    text-align: center; /* Centrar el texto horizontalmente */
+    border: 2px solid #ccc; /* Opcional: Añadir un borde */
+    border-radius: 10px; /* Opcional: Bordes redondeados */
+    margin: 100px; /* Espaciado externo */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  }
+  
+  .title {
+    font-family: 'Georgia', serif; /* Cambia esto por la tipografía que desees */
+    font-size: 3em; /* Tamaño de la fuente */
+    color: #333; /* Color del texto */
+    margin: 0; /* Elimina el margen por defecto */
+  }

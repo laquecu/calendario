@@ -1,0 +1,20 @@
+.centered-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+.form-container {
+  position: absolute;  /* O puedes usar fixed si deseas que se mantenga fijo */
+  top: 150px;          /* Mantiene el formulario a 400px del top */
+  left: 50%;           /* Centra horizontalmente */
+  transform: translateX(-50%);
+  z-index: 10;
+  background-color: #f8f9fa; /* Color de fondo opcional */
+  padding: 20px;
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombras para darle algo de relieve */
+  max-width: 400px; /* Ancho máximo del formulario */
+  width: 80%;
+}
