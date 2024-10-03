@@ -44,6 +44,10 @@ const CalendarComponent = () => {
   const [newEvent, setNewEvent] = useState({ title: '', start: new Date(), end: new Date() });
   const [showInput, setShowInput] = useState(false);
 
+  // Obtener la zona horaria del cliente
+const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+console.log("Zona horaria del cliente:", clientTimeZone);
+
   useEffect(() => {
     fetch('http://localhost:3000/api/eventos')
       .then(response => {
@@ -74,6 +78,34 @@ const CalendarComponent = () => {
       });
   }, []);
 
+  //función para que se carguen los datos de la BBDD
+  const fetchEvents = () => {
+    fetch('http://localhost:3000/api/eventos')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data && data.length > 0) {
+          const mappedEvents = data.map(evento => ({
+            id: evento.id,
+            title: evento.nombre,
+            start: new Date(evento.start),
+            end: new Date(evento.end),
+            telefono: evento.telefono
+          }));
+          setEvents(mappedEvents);
+        } else {
+          console.warn("No hay datos disponibles");
+        }
+      })
+      .catch(error => {
+        console.error("Error al cargar eventos:", error);
+      });
+  };
+  
   const handleSelectEvent = (event) => {
     setSelectedEvent(event);
     setShowModal(true);
@@ -83,7 +115,11 @@ const CalendarComponent = () => {
   const handleSelect = ({ start, end }) => {
     // Configura el nuevo evento con la fecha seleccionada
     //setNewEvent({ ...newEvent, start, end });
-    setNewEvent({ ...newEvent, startDate: start.toISOString().split('T')[0], endDate: end.toISOString().split('T')[0] });
+    const startDate = new Date(start.setHours(0, 0, 0, 0));
+    const endDate = new Date(end.setHours(0, 0, 0, 0));
+
+    setNewEvent({ ...newEvent, startDate: startDate.toISOString().split('T')[0], endDate: endDate.toISOString().split('T')[0] });
+    setIsEditMode(false);
     setShowInput(true); // Muestra el formulario de entrada
   };
 
@@ -93,9 +129,13 @@ const CalendarComponent = () => {
     const startDateTime = new Date(`${newEvent.startDate}T${newEvent.startTime}`);
     const endDateTime = new Date(`${newEvent.endDate}T${newEvent.endTime}`);
     
+    const method = isEditMode ? 'PUT' : 'POST'; // Determina si es una creación o actualización
+    const url = isEditMode 
+      ? `http://localhost:3000/api/eventos/${selectedEvent.id}` // URL para actualizar
+      : 'http://localhost:3000/api/eventos'; // URL para crear
     // Guarda en el backend
-    fetch('http://localhost:3000/api/eventos', {
-      method: 'POST',
+    fetch(url, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -110,21 +150,34 @@ const CalendarComponent = () => {
     })
     .then(response => response.json())
     .then(event => {
-      setEvents([...events, {
-        id: event.id,
-        title: event.nombre,
-        start: new Date(event.start),
-        end: new Date(event.end),
-        telefono: event.telefono
-      }]);
-      setShowInput(false); // Oculta el formulario
-      //setNewEvent({ title: '', start: new Date(), end: new Date() }); // Resetea el formulario
+      if (isEditMode) {
+        // Actualiza el evento en la lista existente si es modo edición
+        setEvents(events.map(evt => evt.id === event.id ? {
+          ...evt,
+          title: event.nombre,
+          start: new Date(event.start),
+          end: new Date(event.end),
+          telefono: event.telefono,
+        } : evt));
+      } else {
+        // Agrega el evento si es un nuevo evento
+        setEvents([...events, {
+          id: event.id,
+          title: event.nombre,
+          start: new Date(event.start),
+          end: new Date(event.end),
+          telefono: event.telefono,
+        }]);
+      }
+      fetchEvents(); // Vuelve a cargar los eventos desde el backend
+      setShowInput(false); // Cierra el formulario
+      setIsEditMode(false); // Reinicia el modo
       setNewEvent({ title: '', startDate: '', startTime: '', endDate: '', endTime: '', telefono: '' }); // Resetea el formulario
     })
     .catch(error => {
-      console.error('Error al agregar evento:', error);
+      console.error('Error al guardar el evento:', error);
     });
-  };
+};
 
   const handleClose = () => {
     setShowInput(false); // Cerrar el formulario al hacer clic en "Cerrar"
@@ -158,7 +211,10 @@ const handleEdit = (eventId) => {
         endTime: eventoActual.end.toTimeString().split(' ')[0],
         telefono: eventoActual.telefono,
       });
+      setIsEditMode(true); // Activa el modo de edición
+      setSelectedEvent(eventoActual); // Establece el evento actual seleccionado
       setShowInput(true); // Muestra el formulario de entrada para editar
+      setShowModal(false);
     }
   };
   
@@ -181,7 +237,7 @@ const handleEdit = (eventId) => {
         <div className="centered-form">
       <div className="form-container">
         <form onSubmit={handleSubmit}>
-          <h2>Agregar Evento</h2>
+          <h2>{ isEditMode ? 'Cambiar Evento' : 'Agregar Evento' }</h2>
 
           <div>
             <label>Título del evento:</label>
@@ -249,7 +305,7 @@ const handleEdit = (eventId) => {
             />
           </div>
             <div className="d-flex justify-content-between">
-                <button type="submit" className="btn btn-primary mt-3">Agregar Evento</button>
+                <button type="submit" className="btn btn-primary mt-3">{isEditMode ? 'Actualizar Evento' : 'Agregar Evento'}</button>
                 <button className="btn btn-secondary mt-3" onClick={handleClose}>X</button>
             </div>
           

@@ -10,6 +10,9 @@ const mensaje_recordatorio = require('./mensaje_recordatorio');
 app.use(cors());
 app.use(express.json());
 
+// Obtener la zona horaria del servidor
+const serverTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+console.log("Zona horaria del servidor:", serverTimeZone);
 
 
 // Ruta para obtener "Hola Mundo"
@@ -111,6 +114,34 @@ app.listen(port, () => {
     console.log(`Servidor ejecutándose en http://localhost:${port}`);
 });
 
+// Ruta para actualizar un evento existente
+app.put('/api/eventos/:id', (req, res) => {
+    const { id } = req.params; // ID del evento a actualizar
+    const { nombre, start, end, telefono } = req.body; // Nuevos datos enviados desde el formulario
+
+    // Validar que los campos no estén vacíos
+    if (!nombre || !start || !end || !telefono) {
+        return res.status(400).json({ error: 'Todos los campos son requeridos.' });
+    }
+
+    // Consulta SQL para actualizar el evento
+    const sql = 'UPDATE eventos SET nombre = ?, start = ?, end = ?, telefono = ? WHERE id = ?';
+    const params = [nombre, start, end, telefono, id];
+
+    // Ejecutar la actualización
+    db.run(sql, params, function(err) {
+        if (err) {
+            return res.status(500).json({ error: 'Error al actualizar el evento: ' + err.message });
+        }
+
+        if (this.changes === 0) { // Verifica si se realizó algún cambio
+            return res.status(404).json({ error: 'Evento no encontrado o no actualizado.' });
+        }
+
+        // Si la actualización fue exitosa, responde con el evento actualizado
+        res.json({ mensaje: 'Evento actualizado correctamente', id });
+    });
+});
 
 
 // Cerrar la base de datos al terminar el proceso
