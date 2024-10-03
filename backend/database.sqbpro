@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="E:/proyHolaMundo/backend/database.db" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="719"/><column_width id="4" width="0"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE personas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    edad INTEGER NOT NULL
+);</sql><sql name="SQL 2">INSERT INTO personas (nombre, edad) VALUES ('Juan', 25);
+INSERT INTO personas (nombre, edad) VALUES ('Ana', 30);
+INSERT INTO personas (nombre, edad) VALUES ('Pedro', 22);
+INSERT INTO personas (nombre, edad) VALUES ('María', 28);</sql><current_tab id="1"/></tab_sql></sqlb_project>
