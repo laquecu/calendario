@@ -21,14 +21,20 @@ app.get('/api/hola', (req, res) => {
 });
 
 // Ruta para obtener la lista de personas de la base de datos
-app.get('/api/personas', (req, res) => {
-    const sql = 'SELECT nombre, edad FROM personas';
+app.get('/api/clientes', (req, res) => {
+    const sql = 'SELECT nombre, apellidos, email, telefono FROM clientes';
     db.all(sql, [], (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
             return;
         }
-        res.json(rows);
+        const clientes = rows.map(row => ({
+            nombre: row.nombre,
+            apellidos: row.apellidos,
+            email: row.email,
+            telefono: row.telefono,
+          }));
+        res.json(clientes);
     });
 });
 

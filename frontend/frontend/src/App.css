@@ -18,3 +18,38 @@
   max-width: 400px; /* Ancho máximo del formulario */
   width: 80%;
 }
+
+/* Estilos generales para el contenedor */
+.table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra el contenido horizontalmente */
+  margin: 20px; /* Espaciado alrededor del contenedor */
+}
+
+/* Estilos para la tabla */
+table {
+  border-collapse: collapse; /* Elimina los bordes duplicados */
+  width: 80%; /* Ancho de la tabla */
+  max-width: 800px; /* Ancho máximo de la tabla */
+  margin: 20px 0; /* Margen vertical */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra de la tabla */
+}
+
+/* Estilos para las celdas y encabezados */
+th, td {
+  padding: 12px; /* Espaciado interno */
+  text-align: left; /* Alineación del texto a la izquierda */
+  border-bottom: 1px solid #ddd; /* Línea inferior para las celdas */
+}
+
+/* Estilos para los encabezados de la tabla */
+th {
+  background-color: #ec6f6f; /* Color de fondo para el encabezado */
+  color: white; /* Color de texto para el encabezado */
+}
+
+/* Efecto al pasar el mouse sobre las filas */
+tr:hover {
+  background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
+}

@@ -232,6 +232,8 @@ const handleEdit = (eventId) => {
         endAccessor="end"
         style={{ height: 500 }}
         messages={messages}
+        min={new Date(2023, 1, 1, 8, 0)} // Empieza a las 8:00 AM
+        max={new Date(2023, 1, 1, 20, 0)} // Termina a las 6:00 PM
       />
       {showInput && (
         <div className="centered-form">
