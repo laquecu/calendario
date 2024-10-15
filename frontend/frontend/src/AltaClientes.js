@@ -51,7 +51,9 @@ const AltaClientes = () => {
     };
 
     return (
-        <div className="alta-clientes">
+        <div className="centered-form">
+      <div className="form-container">
+        
             <h2>Alta de Nuevos Clientes</h2>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -101,6 +103,7 @@ const AltaClientes = () => {
                 <button type="submit" className='btn btn-primary mt-3'>Crear Cliente</button>
             </form>
             {message && <p>{message}</p>}
+        </div>
         </div>
     );
 };
