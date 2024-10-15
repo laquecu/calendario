@@ -99,17 +99,24 @@ const BuscadorClientes = () => {
               <th>Apellidos</th>
               <th>E-mail</th>
               <th>Teléfono</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {filteredClientes.map((cliente, index) => (
-              <tr key={index} onClick={() => handleClienteClick(cliente)}
-              style={{ cursor: 'pointer' }} >
+              /*<tr key={index} onClick={() => handleClienteClick(cliente)}
+              style={{ cursor: 'pointer' }} >*/
+              <tr key={index}>
                 <td>{cliente.nombre}</td>
                 <td>{cliente.apellidos}</td>
                 <td>{cliente.email}</td>
                 <td>{cliente.telefono}</td>
-              </tr>
+                <td>
+                  <button onClick={() => handleClienteClick(cliente)}
+                  className='btn btn-link' title='crear cita'>Cita</button>
+                </td>
+                </tr>
+              /*</tr>*/
             ))}
           </tbody>
         </table>

@@ -149,6 +149,32 @@ app.put('/api/eventos/:id', (req, res) => {
     });
 });
 
+//Ruta para crear un nuevo cliente
+app.post('/api/clientes', (req, res) => {
+    const { nombre, apellidos, email, telefono } = req.body;
+    console.log(req.body); // Verificar que recibimos los datos correctamente
+    // Validar que los campos estén completos
+  if (!nombre || !apellidos || !email || !telefono) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos.' });
+  }
+
+  const sql = 'INSERT INTO clientes (nombre, apellidos, email, telefono) VALUES (?, ?, ?, ?)';
+  const params = [nombre, apellidos, email, telefono];
+
+  db.run(sql, params, function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    res.status(201).json({
+      id: this.lastID,
+      nombre,
+      apellidos,
+      email,
+      telefono,
+    });
+  });
+});
 
 // Cerrar la base de datos al terminar el proceso
 process.on('SIGINT', () => {

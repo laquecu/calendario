@@ -9,6 +9,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Home from './Home'; // La página principal
 import './portada.css';
 import BuscadorClientes from './buscadorClientes';
+import AltaClientes from './AltaClientes';
+
 function App() {
   
   const location = useLocation(); // Hook para obtener la ubicación actual
@@ -35,6 +37,9 @@ function App() {
                 <li className="nav-item">
                   <Link className="nav-link" to="/buscador">Buscar Cliente</Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/alta_cliente">Alta Cliente</Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -44,6 +49,7 @@ function App() {
           <Route path="/home" element={<Home />} /> {/* Ruta para el componente Home */}
           <Route path="/calendario" element={<CalendarComponent />} /> {/* Ruta para el componente OtherPage */}
           <Route path="/buscador" element={<BuscadorClientes />} />
+          <Route path='/alta_cliente' element={<AltaClientes/>} />
         </Routes>
         
         

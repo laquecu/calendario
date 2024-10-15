@@ -115,8 +115,8 @@ console.log("Zona horaria del cliente:", clientTimeZone);
   const handleSelect = ({ start, end }) => {
     // Configura el nuevo evento con la fecha seleccionada
     //setNewEvent({ ...newEvent, start, end });
-    const startDate = new Date(start.setHours(0, 0, 0, 0));
-    const endDate = new Date(end.setHours(0, 0, 0, 0));
+    const startDate = new Date(start.setHours(23, 59, 59, 999));
+    const endDate = new Date(start.setHours(23, 59, 59, 999));
 
     setNewEvent({ ...newEvent, startDate: startDate.toISOString().split('T')[0], endDate: endDate.toISOString().split('T')[0] });
     setIsEditMode(false);
